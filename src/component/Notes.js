@@ -1,13 +1,21 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import noteContext from "../context/notes/NoteContext"
+import { useHistory } from 'react-router-dom'
 import NoteItem from './NoteItem'
 
 const Notes = (props) => {
+    let history = useHistory()
     const context = useContext(noteContext)
     const { notes, fetchNote, editNote } = context
     const [note, setnote] = useState({title: "", description: "", tag: "General"})
     useEffect(() => {
-        fetchNote()
+        if(localStorage.getItem('auth-token')){
+            fetchNote()
+        }
+        else{
+            history.push("/login")
+            props.showAlert("You have to first login", "warning")
+        }
         // eslint-disable-next-line
     }, [])
     const handleClick = (e)=>{
