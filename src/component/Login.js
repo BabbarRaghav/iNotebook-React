@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
-const Login = () => {
+const Login = (props) => {
     const [auth, setauth] = useState({email: "", password: ""})
     let history = useHistory()
     const handleSubmit = async (e)=>{
@@ -18,6 +18,10 @@ const Login = () => {
         if (json.success){
             localStorage.setItem('auth-token', json.jwtData)
             history.push("/")
+            props.showAlert("Login Successfully", "success")
+        }
+        else{
+            props.showAlert("Invalid Email ID or Password", "danger")
         }
     }
     const onChange = (e)=>{

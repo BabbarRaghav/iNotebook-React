@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import noteContext from "../context/notes/NoteContext"
 import NoteItem from './NoteItem'
 
-const Notes = () => {
+const Notes = (props) => {
     const context = useContext(noteContext)
     const { notes, fetchNote, editNote } = context
     const [note, setnote] = useState({title: "", description: "", tag: "General"})
@@ -14,6 +14,7 @@ const Notes = () => {
         console.log("updateing note..... "+note)
         e.preventDefault()
         editNote(note._id, note.title, note.description, note.tag)
+        props.showAlert("Updated Successfully", "success")
     }
     const onChange = (e)=>{
         setnote({...note, [e.target.name]: e.target.value})
@@ -62,7 +63,7 @@ const Notes = () => {
                 <h1>Your Note</h1>
                 {notes.length===0 && <h5>No Notes to show!!!</h5>}
                 {notes.map((note) => {
-                    return <NoteItem key={note._id} note={note} updatenote={updatenote} />
+                    return <NoteItem key={note._id} note={note} updatenote={updatenote} showAlert={props.showAlert}/>
                 })}
             </div>
         </>
